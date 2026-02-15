@@ -208,20 +208,20 @@ pub enum Error {
     InvalidUtf8,
     #[error("The string is not null terminated.")]
     InvalidNullString,
-    #[error("Failed to parse identity, the parsed string had more than 4 fields.")]
-    IdentityParse,
-    #[error("Failed to parse Standard Event Status Register (SESR).")]
-    StandardEventStatusRegisterParse,
-    #[error("Failed to parse Standard Event Status Enable Register (SESER) response.")]
-    StandardEventStatusEnableRegisterParse,
-    #[error("Failed to parse Operation Complete (*OPC?) response.")]
-    OperationCompleteQueryParse,
-    #[error("Failed to parse Status Byte Register (*STB?) response.")]
-    StatusByteRegisterQueryParse,
-    #[error("Failed to Self Test (*TST?) response.")]
-    SelfTestParse,
-    #[error("Failed to parse Service Request Enable (*SRE?) response.")]
-    ServiceRequestEnableQueryParse,
+    #[error("Invalid identity, the parsed string had more than 4 fields: {0}.")]
+    IdentityParse(String),
+    #[error("Invalid Standard Event Status Register (SESR) response: {0}.")]
+    StandardEventStatusRegisterParse(String),
+    #[error("Invalid Standard Event Status Enable Register (SESER) response : {0}.")]
+    StandardEventStatusEnableRegisterParse(String),
+    #[error("Invalid Operation Complete (*OPC?) response: {0}.")]
+    OperationCompleteQueryParse(String),
+    #[error("Invalid Status Byte Register (*STB?) response: {0}.")]
+    StatusByteRegisterQueryParse(String),
+    #[error("Invalid Self Test (*TST?) response: {0}.")]
+    SelfTestParse(String),
+    #[error("Invalid Service Request Enable (*SRE?) response: {0}.")]
+    ServiceRequestEnableQueryParse(String),
     #[error("Unexpected completion code: {0}")]
     UnexpectedCompletionCode(CompletionCode),
 }

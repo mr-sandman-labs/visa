@@ -81,74 +81,78 @@ pub fn stringify_buffer(buffer: &[u8]) -> Result<String> {
 pub trait MandatoryCommands {
     fn as_session(&self) -> &Session;
 
+    fn clear_status(&self) -> Result<()> {
+        self.as_session().write("*CLS\n")
+    }
+
     fn standard_event_status_enable_command(
         &self,
         register: StandardEventStatusEnableRegister,
     ) -> Result<()> {
         self.as_session()
-            .write(format!("*ESE {}", register.value()))
+            .write(format!("*ESE {}\n", register.value()))
     }
 
     fn standard_event_status_enable_query(&self) -> Result<StandardEventStatusEnableRegister> {
-        let response = self.as_session().query("*ESE?")?;
+        let response = self.as_session().query("*ESE?\n")?;
         Ok(StandardEventStatusEnableRegister::try_from(
             response.as_str(),
         )?)
     }
 
     fn standard_event_status_register_query(&self) -> Result<StandardEventStatusRegister> {
-        let response = self.as_session().query("*ESR?")?;
+        let response = self.as_session().query("*ESR?\n")?;
         Ok(StandardEventStatusRegister::try_from(response.as_str())?)
     }
 
     fn identification_query(&self) -> Result<Identification> {
-        let response = self.as_session().query("*IDN?")?;
+        let response = self.as_session().query("*IDN?\n")?;
         Identification::try_from(response.as_str())
     }
 
     fn operation_complete_command(&self) -> Result<()> {
-        self.as_session().write("*OPC")
+        self.as_session().write("*OPC\n")
     }
 
     fn operation_complete_query(&self) -> Result<bool> {
-        let response = self.as_session().query("*OPC?")?;
+        let response = self.as_session().query("*OPC?\n")?;
         match response.as_str() {
             "0" => Ok(false),
             "1" => Ok(true),
-            _ => Err(Error::OperationCompleteQueryParse),
+            response => Err(Error::OperationCompleteQueryParse(response.to_string())),
         }
     }
 
-    fn reset_comamnd(&self) -> Result<()> {
-        self.as_session().write("*RST")
+    fn reset_command(&self) -> Result<()> {
+        self.as_session().write("*RST\n")
     }
 
     fn service_request_enable_command(&self, register: ServiceRequestEnable) -> Result<()> {
         self.as_session()
-            .write(format!("*SRE {}", register.value()))
+            .write(format!("*SRE {}\n", register.value()))
     }
 
     fn service_request_enable_query(&self) -> Result<ServiceRequestEnable> {
-        let response = self.as_session().query("*SRE?")?;
+        let response = self.as_session().query("*SRE?\n")?;
         Ok(ServiceRequestEnable::try_from(response.as_str())?)
     }
 
     fn read_status_byte_query(&self) -> Result<StatusByteRegister> {
-        let response = self.as_session().query("*STB?")?;
+        let response = self.as_session().query("*STB?\n")?;
         Ok(StatusByteRegister::try_from(response.as_str())?)
     }
 
     fn self_test_query(&self) -> Result<bool> {
-        let response = self.as_session().query("*TST?")?;
+        let response = self.as_session().query("*TST?\n")?;
         match response.as_str() {
-            "0" => Ok(false),
-            "1" => Ok(true),
-            _ => Err(Error::SelfTestParse),
+            "0" => Ok(true),
+            "1" => Ok(false),
+            response => Err(Error::SelfTestParse(response.to_string())),
         }
     }
 
     fn wait_to_continue_command(&self) -> Result<()> {
-        self.as_session().write("*WAI")
+        self.as_session().write("*WAI\n")
     }
 }
 
@@ -167,7 +171,7 @@ impl TryFrom<&str> for Identification {
         let parts: Vec<&str> = value.trim().split(',').collect();
 
         if parts.len() != 4 {
-            return Err(Error::IdentityParse);
+            return Err(Error::IdentityParse(value.to_string()));
         }
 
         Ok(Self {
@@ -211,7 +215,7 @@ impl TryFrom<&str> for StandardEventStatusRegister {
         let value = value
             .trim()
             .parse()
-            .map_err(|_| Error::StandardEventStatusRegisterParse)?;
+            .map_err(|_| Error::StandardEventStatusRegisterParse(value.to_string()))?;
 
         Ok(Self::from_bits_retain(value))
     }
@@ -249,7 +253,7 @@ impl TryFrom<&str> for StandardEventStatusEnableRegister {
         let value = value
             .trim()
             .parse()
-            .map_err(|_| Error::StandardEventStatusRegisterParse)?;
+            .map_err(|_| Error::StandardEventStatusRegisterParse(value.to_string()))?;
 
         Ok(Self::from_bits_retain(value))
     }
@@ -302,7 +306,7 @@ impl TryFrom<&str> for StatusByteRegister {
         let value = value
             .trim()
             .parse()
-            .map_err(|_| Error::StatusByteRegisterQueryParse)?;
+            .map_err(|_| Error::StatusByteRegisterQueryParse(value.to_string()))?;
 
         Ok(Self::from_bits_retain(value))
     }
@@ -336,7 +340,7 @@ impl TryFrom<&str> for ServiceRequestEnable {
         let value = value
             .trim()
             .parse()
-            .map_err(|_| Error::ServiceRequestEnableQueryParse)?;
+            .map_err(|_| Error::ServiceRequestEnableQueryParse(value.to_string()))?;
 
         Ok(Self::from_bits_retain(value))
     }
