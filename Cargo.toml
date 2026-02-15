@@ -1,0 +1,14 @@
+[package]
+name = "visa"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+visa-bindings = { git = "https://github.com/mr-sandman-labs/visa-bindings.git" }
+thiserror = { version = "2.0" }
+tracing = { version = "0.1" }
+bitflags = { version = "2.11" }
+
+[dev-dependencies]
+color-eyre = { version = "0.6" }
+tracing-subscriber = "0.3"
