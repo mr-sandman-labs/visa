@@ -4,223 +4,221 @@ pub type Result<T> = core::result::Result<T, Error>;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
-    #[error("Unknown system error (miscellaneous error).")]
+    #[error("Unknown system error (miscellaneous error)")]
     System,
-    #[error("The given session or object reference is invalid.")]
+    #[error("The given session or object reference is invalid")]
     InvalidObject,
     #[error(
-        "Specified type of lock cannot be obtained or specified operation cannot be performed, because the resource is locked."
+        "Specified type of lock cannot be obtained or specified operation cannot be performed, because the resource is locked"
     )]
     ResourceLocked,
-    #[error("Invalid expression specified for search.")]
+    #[error("Invalid expression specified for search")]
     InvalidExpression,
     #[error(
-        "Insufficient location information or the device or resource is not present in the system."
+        "Insufficient location information or the device or resource is not present in the system"
     )]
     ResourceNotFound,
-    #[error("Invalid resource reference specified. Parsing error.")]
+    #[error("Invalid resource reference specified. Parsing error")]
     InvalidResourceName,
-    #[error("Invalid access mode.")]
+    #[error("Invalid access mode")]
     InvalidAccessMode,
-    #[error("Timeout expired before operation completed.")]
+    #[error("Timeout expired before operation completed")]
     Timeout,
     #[error(
-        "Unable to deallocate the previously allocated data structures corresponding to this session or object reference."
+        "Unable to deallocate the previously allocated data structures corresponding to this session or object reference"
     )]
     ClosingFailed,
-    #[error("Specified degree is invalid.")]
+    #[error("Specified degree is invalid")]
     InvalidDegree,
-    #[error("Specified job identifier is invalid.")]
+    #[error("Specified job identifier is invalid")]
     InvalidJobId,
     #[error(
-        "The specified attribute is not defined or supported by the referenced session, event, or find list."
+        "The specified attribute is not defined or supported by the referenced session, event, or find list"
     )]
     AttributeNotSupported,
     #[error(
-        "The specified state of the attribute is not valid, or is not supported as defined by the session, event, or find list."
+        "The specified state of the attribute is not valid, or is not supported as defined by the session, event, or find list"
     )]
     AttributeStateNotSupported,
-    #[error("The specified attribute is Read Only.")]
+    #[error("The specified attribute is Read Only")]
     AttibuteReadOnly,
-    #[error("The specified type of lock is not supported by this resource.")]
+    #[error("The specified type of lock is not supported by this resource")]
     InvalidLockType,
-    #[error("The access key to the resource associated with this session is invalid.")]
+    #[error("The access key to the resource associated with this session is invalid")]
     InvalidAccessKey,
-    #[error("Specified event type is not supported by the resource.")]
+    #[error("Specified event type is not supported by the resource")]
     InvalidEvent,
-    #[error("Invalid mechanism specified.")]
+    #[error("Invalid mechanism specified")]
     InvalidMechanism,
-    #[error("A handler is not currently installed for the specified event.")]
+    #[error("A handler is not currently installed for the specified event")]
     HandlerNotInstalled,
-    #[error("The given handler reference is invalid.")]
+    #[error("The given handler reference is invalid")]
     InvalidHandlerReference,
-    #[error("Specified event context is invalid.")]
+    #[error("Specified event context is invalid")]
     InvalidContext,
     #[error(
-        "The event queue for the specified type has overflowed (usually due to previous events not having been closed)."
+        "The event queue for the specified type has overflowed (usually due to previous events not having been closed)"
     )]
     QueueOverflow,
     #[error(
-        "The session must be enabled for events of the specified type in order to receive them."
+        "The session must be enabled for events of the specified type in order to receive them"
     )]
     NotEnabled,
-    #[error("The operation was aborted.")]
+    #[error("The operation was aborted")]
     Abort,
-    #[error("Violation of raw write protocol occurred during transfer.")]
+    #[error("Violation of raw write protocol occurred during transfer")]
     RawWriteProtocolViolation,
-    #[error("Violation of raw write protocol occurred during transfer.")]
+    #[error("Violation of raw write protocol occurred during transfer")]
     RawReadProtocolViolation,
-    #[error("Device reported an output protocol error during transfer.")]
+    #[error("Device reported an output protocol error during transfer")]
     OutputProtocolViolation,
-    #[error("Device reported an input protocol error during transfer.")]
+    #[error("Device reported an input protocol error during transfer")]
     InputProtocolViolation,
-    #[error("Bus error occurred during transfer.")]
+    #[error("Bus error occurred during transfer")]
     Bus,
     #[error(
-        "Unable to queue the asynchronous operation because there is already an operation in progress."
+        "Unable to queue the asynchronous operation because there is already an operation in progress"
     )]
     InProgress,
     #[error(
-        "Unable to start operation because setup is invalid (due to attributes being set to an inconsistent state)."
+        "Unable to start operation because setup is invalid (due to attributes being set to an inconsistent state)"
     )]
     InvalidSetup,
     #[error(
-        "Unable to queue asynchronous operation (usually due to the I/O completion event not being enabled or insufficient space in the session's queue)."
+        "Unable to queue asynchronous operation (usually due to the I/O completion event not being enabled or insufficient space in the session's queue)"
     )]
     Queue,
-    #[error("Insufficient system resources to perform necessary memory allocation.")]
+    #[error("Insufficient system resources to perform necessary memory allocation")]
     Allocation,
-    #[error("Invalid buffer mask specified.")]
+    #[error("Invalid buffer mask specified")]
     InvalidMask,
-    #[error("Could not perform operation because of I/O error.")]
+    #[error("Could not perform operation because of I/O error")]
     Io,
-    #[error("A format specifier in the format string is invalid.")]
+    #[error("A format specifier in the format string is invalid")]
     InvalidFormat,
-    #[error("A format specifier in the format string is not supported.")]
+    #[error("A format specifier in the format string is not supported")]
     FormatNotSupported,
-    #[error("The specified trigger line is currently in use.")]
+    #[error("The specified trigger line is currently in use")]
     TriggerLineInUse,
-    #[error("The specified mode is not supported by this VISA implementation.")]
+    #[error("The specified mode is not supported by this VISA implementation")]
     ModeNotSupported,
-    #[error("Service request has not been received for the session.")]
+    #[error("Service request has not been received for the session")]
     ServiceRequestNotReceived,
-    #[error("Invalid address space specified.")]
+    #[error("Invalid address space specified")]
     InvalidAddressSpace,
-    #[error("Invalid offset specified.")]
+    #[error("Invalid offset specified")]
     InvalidOffset,
-    #[error("Invalid source or destination width specified.")]
+    #[error("Invalid source or destination width specified")]
     InvalidWidth,
-    #[error("Specified offset is not accessible from this hardware.")]
+    #[error("Specified offset is not accessible from this hardware")]
     OffsetNotAccessible,
-    #[error("Cannot support source and destination widths that are different.")]
+    #[error("Cannot support source and destination widths that are different")]
     VariableWidthNotSupported,
-    #[error("The specified session is not currently mapped.")]
+    #[error("The specified session is not currently mapped")]
     SessionNotMapped,
-    #[error("A previous response is still pending, causing a multiple query error.")]
+    #[error("A previous response is still pending, causing a multiple query error")]
     ResponsePending,
-    #[error("No Listeners condition is detected (both NRFD and NDAC are deasserted).")]
+    #[error("No Listeners condition is detected (both NRFD and NDAC are deasserted)")]
     NoListeners,
-    #[error(
-        "The interface associated with this session is not currently the controller in charge."
-    )]
+    #[error("The interface associated with this session is not currently the controller in charge")]
     NotControllerInCharge,
-    #[error("The interface associated with this session is not the system controller.")]
+    #[error("The interface associated with this session is not the system controller")]
     NotSystemController,
-    #[error("The given session or object reference does not support this operation.")]
+    #[error("The given session or object reference does not support this operation")]
     OperationNotSupported,
-    #[error("An interrupt is still pending from a previous call.")]
+    #[error("An interrupt is still pending from a previous call")]
     InterruptPending,
-    #[error("A parity error occurred during transfer.")]
+    #[error("A parity error occurred during transfer")]
     AsrlParity,
-    #[error("A framing error occurred during transfer.")]
+    #[error("A framing error occurred during transfer")]
     AsrlFraming,
     #[error(
-        "An overrun error occurred during transfer. A character was not read from the hardware before the next character arrived."
+        "An overrun error occurred during transfer. A character was not read from the hardware before the next character arrived"
     )]
     AsrlOverrun,
-    #[error("The path from trigSrc to trigDest is not currently mapped.")]
+    #[error("The path from trigSrc to trigDest is not currently mapped")]
     TriggerNotMapped,
-    #[error("The specified offset is not properly aligned for the access width of the operation.")]
+    #[error("The specified offset is not properly aligned for the access width of the operation")]
     OffsetNotAligned,
-    #[error("A specified user buffer is not valid or cannot be accessed for the required size.")]
+    #[error("A specified user buffer is not valid or cannot be accessed for the required size")]
     UserBuffer,
-    #[error("The resource is valid, but VISA cannot currently access it.")]
+    #[error("The resource is valid, but VISA cannot currently access it")]
     ResourceBusy,
-    #[error("Specified width is not supported by this hardware.")]
+    #[error("Specified width is not supported by this hardware")]
     WidthNotSupported,
-    #[error("The value of some parameter—which parameter is not known—is invalid.")]
+    #[error("The value of some parameter—which parameter is not known—is invalid")]
     InvalidParameter,
-    #[error("The protocol specified is invalid.")]
+    #[error("The protocol specified is invalid")]
     InvalidProtocol,
-    #[error("Invalid size of window specified.")]
+    #[error("Invalid size of window specified")]
     InvalidSize,
-    #[error("The specified session currently contains a mapped window.")]
+    #[error("The specified session currently contains a mapped window")]
     WindowMapped,
-    #[error("The given operation is not implemented.")]
+    #[error("The given operation is not implemented")]
     OperationNotImplemented,
-    #[error("Invalid length specified.")]
+    #[error("Invalid length specified")]
     InvalidLength,
-    #[error("The specified mode is invalid.")]
+    #[error("The specified mode is invalid")]
     InvalidMode,
-    #[error("The current session did not have any lock on the resource.")]
+    #[error("The current session did not have any lock on the resource")]
     SessionNotLocked,
-    #[error("The device does not export any memory.")]
+    #[error("The device does not export any memory")]
     MemoryNotShared,
-    #[error("A code library required by VISA could not be located or loaded.")]
+    #[error("A code library required by VISA could not be located or loaded")]
     LibraryNotFound,
     #[error(
-        "The interface cannot generate an interrupt on the requested level or with the requested statusID value."
+        "The interface cannot generate an interrupt on the requested level or with the requested statusID value"
     )]
     InterruptNotSupported,
-    #[error("The value specified by the line parameter is invalid.")]
+    #[error("The value specified by the line parameter is invalid")]
     InvalidLine,
     #[error(
-        "An error occurred while trying to open the specified file. Possible reasons include an invalid path or lack of access rights."
+        "An error occurred while trying to open the specified file. Possible reasons include an invalid path or lack of access rights"
     )]
     FileAccess,
-    #[error("An error occurred while performing I/O on the specified file.")]
+    #[error("An error occurred while performing I/O on the specified file")]
     FileIo,
     #[error(
-        "One of the specified lines (trigSrc or trigDest) is not supported by this VISA implementation, or the combination of lines is not a valid mapping."
+        "One of the specified lines (trigSrc or trigDest) is not supported by this VISA implementation, or the combination of lines is not a valid mapping"
     )]
     LineNotSupported,
-    #[error("The specified mechanism is not supported for the given event type.")]
+    #[error("The specified mechanism is not supported for the given event type")]
     MechanismNotSupported,
-    #[error("The interface type is valid but the specified interface number is not configured.")]
+    #[error("The interface type is valid but the specified interface number is not configured")]
     InterfaceNumberNotConfigured,
-    #[error("The connection for the given session has been lost.")]
+    #[error("The connection for the given session has been lost")]
     ConnectionLost,
-    #[error("The remote machine does not exist or is not accepting any connections.")]
+    #[error("The remote machine does not exist or is not accepting any connections")]
     MachineNotAvailable,
     #[error(
-        "Access to the resource or remote machine is denied. This is due to lack of sufficient privileges for the current user or machine."
+        "Access to the resource or remote machine is denied. This is due to lack of sufficient privileges for the current user or machine"
     )]
     NoPermission,
-    #[error("Invalid error code supplied from VISA: {0}.")]
+    #[error("Invalid error code supplied from VISA: {0}")]
     InvalidErrorCode(i32),
-    #[error("Invalid completion code supplied from VISA: {0}.")]
+    #[error("Invalid completion code supplied from VISA: {0}")]
     InvalidCompletionCode(u32),
-    #[error("Invalid timeout value: {}.", &0)]
+    #[error("Invalid timeout value: {}", &0)]
     InvalidTimeout(std::time::Duration),
-    #[error("Write command wrote {length} bytes instead of {expected}.")]
+    #[error("Write command wrote {length} bytes instead of {expected}")]
     WriteLengthMistmatch { length: usize, expected: usize },
-    #[error("The buffer contains invalid UTF-8 characters.")]
+    #[error("The buffer contains invalid UTF-8 characters")]
     InvalidUtf8,
-    #[error("The string is not null terminated.")]
+    #[error("The string is not null terminated")]
     InvalidNullString,
-    #[error("Invalid identity, the parsed string had more than 4 fields: {0}.")]
+    #[error("Invalid identity, the parsed string had more than 4 fields: {0}")]
     IdentityParse(String),
-    #[error("Invalid Standard Event Status Register (SESR) response: {0}.")]
+    #[error("Invalid Standard Event Status Register (SESR) response: {0}")]
     StandardEventStatusRegisterParse(String),
-    #[error("Invalid Standard Event Status Enable Register (SESER) response : {0}.")]
+    #[error("Invalid Standard Event Status Enable Register (SESER) response: {0}")]
     StandardEventStatusEnableRegisterParse(String),
-    #[error("Invalid Operation Complete (*OPC?) response: {0}.")]
+    #[error("Invalid Operation Complete (*OPC?) response: {0}")]
     OperationCompleteQueryParse(String),
-    #[error("Invalid Status Byte Register (*STB?) response: {0}.")]
+    #[error("Invalid Status Byte Register (*STB?) response: {0}")]
     StatusByteRegisterQueryParse(String),
-    #[error("Invalid Self Test (*TST?) response: {0}.")]
+    #[error("Invalid Self Test (*TST?) response: {0}")]
     SelfTestParse(String),
-    #[error("Invalid Service Request Enable (*SRE?) response: {0}.")]
+    #[error("Invalid Service Request Enable (*SRE?) response: {0}")]
     ServiceRequestEnableQueryParse(String),
     #[error("Unexpected completion code: {0}")]
     UnexpectedCompletionCode(CompletionCode),
@@ -253,73 +251,73 @@ pub enum CompletionCode {
 impl std::fmt::Display for CompletionCode {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Success => write!(f, "Operation completed successfully."),
+            Self::Success => write!(f, "Operation completed successfully"),
             Self::EventEnabled => write!(
                 f,
-                "Specified event is already enabled for at least one of the specified mechanisms."
+                "Specified event is already enabled for at least one of the specified mechanisms"
             ),
             Self::EventDisabled => write!(
                 f,
-                "Specified event is already disabled for at least one of the specified mechanisms."
+                "Specified event is already disabled for at least one of the specified mechanisms"
             ),
             Self::QueueEmpty => write!(
                 f,
-                "Operation completed successfully, but queue was already empty."
+                "Operation completed successfully, but queue was already empty"
             ),
             Self::TerminationCharacterRead => {
-                write!(f, "The specified termination character was read.")
+                write!(f, "The specified termination character was read")
             }
             Self::MaximumCount => {
-                write!(f, "The number of bytes read is equal to the input count.")
+                write!(f, "The number of bytes read is equal to the input count")
             }
             Self::DeviceNotPresent => write!(
                 f,
-                "Session opened successfully, but the device at the specified address is not responding."
+                "Session opened successfully, but the device at the specified address is not responding"
             ),
             Self::TrigPathMapped => {
-                write!(f, "The path from trigSrc to trigDest is already mapped.")
+                write!(f, "The path from trigSrc to trigDest is already mapped")
             }
             Self::QueueNotEmpty => write!(
                 f,
-                "Wait terminated successfully on receipt of an event notification. There is still at least one more event occurrence of the requested type(s) available for this session."
+                "Wait terminated successfully on receipt of an event notification. There is still at least one more event occurrence of the requested type(s) available for this session"
             ),
             Self::DoNotInvokeHandler => write!(
                 f,
-                "Event handled successfully. Do not invoke any other handlers on this session for this event."
+                "Event handled successfully. Do not invoke any other handlers on this session for this event"
             ),
             Self::NestedSharedLock => write!(
                 f,
-                "Operation completed successfully, and this session has nested shared locks."
+                "Operation completed successfully, and this session has nested shared locks"
             ),
             Self::NestedExclusiveLock => write!(
                 f,
-                "Operation completed successfully, and this session has nested exclusive locks."
+                "Operation completed successfully, and this session has nested exclusive locks"
             ),
             Self::AsynchronousOperationHandledSynchronously => write!(
                 f,
-                "Asynchronous operation request was actually performed synchronously."
+                "Asynchronous operation request was actually performed synchronously"
             ),
             Self::QueueOverflow => write!(
                 f,
-                "The event returned is valid. One or more events that occurred have not been raised because there was no room available on the queue at the time of their occurrence. This could happen because VI_ATTR_MAX_QUEUE_LENGTH is not set to a large enough value for your application and/or events are coming in faster than you are servicing them."
+                "The event returned is valid. One or more events that occurred have not been raised because there was no room available on the queue at the time of their occurrence. This could happen because VI_ATTR_MAX_QUEUE_LENGTH is not set to a large enough value for your application and/or events are coming in faster than you are servicing them"
             ),
             Self::ConfigurationNotLoaded => write!(
                 f,
-                "The specified configuration either does not exist or could not be loaded; using VISA-specified defaults."
+                "The specified configuration either does not exist or could not be loaded; using VISA-specified defaults"
             ),
-            Self::NullObject => write!(f, "The specified object reference is uninitialized."),
+            Self::NullObject => write!(f, "The specified object reference is uninitialized"),
             Self::AttributeStateNotSupported => write!(
                 f,
-                "Although the specified state of the attribute is valid, it is not supported by this resource implementation."
+                "Although the specified state of the attribute is valid, it is not supported by this resource implementation"
             ),
             Self::UnknownStatus => write!(
                 f,
-                "The status code passed to the operation could not be interpreted."
+                "The status code passed to the operation could not be interpreted"
             ),
-            Self::BufferNotSupported => write!(f, "The specified buffer is not supported."),
+            Self::BufferNotSupported => write!(f, "The specified buffer is not supported"),
             Self::ExtendedFunctionNotImplemented => write!(
                 f,
-                "The operation succeeded, but a lower level driver did not implement the extended functionality."
+                "The operation succeeded, but a lower level driver did not implement the extended functionality"
             ),
         }
     }

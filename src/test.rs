@@ -17,7 +17,7 @@ mod instrument {
     pub enum Error {
         #[error(transparent)]
         Visa(#[from] crate::error::Error),
-        #[error("Instrument not found.")]
+        #[error("Instrument not found")]
         InstrumentNotFound,
     }
 
@@ -90,7 +90,7 @@ fn main() -> Result<()> {
     info!("Resources:\n{:#?}", resources);
     if resources.is_empty() {
         return Err(eyre!(
-            "At least one valid instrument resource is required for testing."
+            "At least one valid instrument resource is required for testing"
         ));
     }
 
