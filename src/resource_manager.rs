@@ -1,7 +1,7 @@
 use crate::{
     error::*,
     session::Session,
-    utility::{AccessMode, Timeout, stringify_buffer},
+    utility::{AccessMode, MandatoryCommands, Timeout, stringify_buffer},
 };
 use std::ffi::CString;
 use tracing::{debug, error};
@@ -36,19 +36,56 @@ impl ResourceManager {
         Ok(Self { value: session })
     }
 
+    pub fn find_resource_by_identification<T: AsRef<str>>(
+        &self,
+        expression: T,
+        manufacturer: T,
+        model: T,
+        serial: T,
+    ) -> Result<String> {
+        let resources = self.find_resources(expression)?;
+
+        for resource in resources {
+            let session =
+                match self.open_session(&resource, AccessMode::Exclusive, Timeout::Immediate) {
+                    Ok(session) => session,
+                    Err(error) => {
+                        error!("Failed to open session: {}", error);
+                        continue;
+                    }
+                };
+
+            let identification = match session.identification_query() {
+                Ok(identification) => identification,
+                Err(error) => {
+                    error!("Failed to query identification: {}", error);
+                    continue;
+                }
+            };
+
+            if identification.manufacturer == manufacturer.as_ref()
+                && identification.model == model.as_ref()
+                && identification.serial == serial.as_ref()
+            {
+                return Ok(resource);
+            }
+        }
+
+        Err(Error::ResourceNotFound)
+    }
+
     pub fn open_session<T: AsRef<str>>(
         &self,
-        resource_name: T,
+        resource: T,
         access_mode: AccessMode,
         timeout: Timeout,
     ) -> Result<Session> {
         let mut session: ViSession = 0;
-        let resource_name =
-            CString::new(resource_name.as_ref()).map_err(|_| Error::InvalidResourceName)?;
+        let resource = CString::new(resource.as_ref()).map_err(|_| Error::InvalidResourceName)?;
         let completion_code = unsafe {
             CompletionCode::try_from(viOpen(
                 self.value,
-                resource_name.as_ptr(),
+                resource.as_ptr(),
                 access_mode.into(),
                 timeout.try_into()?,
                 &mut session,
@@ -56,7 +93,7 @@ impl ResourceManager {
         };
         debug!(
             "Resource {:?} opened with completion code: {}",
-            resource_name, completion_code
+            resource, completion_code
         );
 
         Ok(Session::new(session))

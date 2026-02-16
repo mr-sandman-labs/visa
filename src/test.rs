@@ -1,28 +1,76 @@
-use std::env;
-
-use crate::{
-    resource_manager::ResourceManager,
-    session::Session,
-    utility::{AccessMode, MandatoryCommands, Timeout},
-};
+use crate::test::instrument::Instrument;
+use crate::{resource_manager::ResourceManager, utility::MandatoryCommands};
 use color_eyre::{Result, eyre::eyre};
 use tracing::{info, level_filters::LevelFilter};
 
-struct Instrument {
-    session: Session,
-}
+mod instrument {
+    use crate::{
+        resource_manager::ResourceManager,
+        session::Session,
+        utility::{AccessMode, MandatoryCommands, Timeout},
+    };
+    use thiserror::Error;
 
-impl Instrument {
-    pub fn new(resource_manager: &ResourceManager, resource: &str) -> Result<Self> {
-        let session =
-            resource_manager.open_session(resource, AccessMode::Exclusive, Timeout::Immediate)?;
-        Ok(Self { session })
+    pub type Result<T> = core::result::Result<T, Error>;
+
+    #[derive(Debug, Error)]
+    pub enum Error {
+        #[error(transparent)]
+        Visa(#[from] crate::error::Error),
+        #[error("Instrument not found.")]
+        InstrumentNotFound,
     }
-}
 
-impl MandatoryCommands for Instrument {
-    fn as_session(&self) -> &Session {
-        &self.session
+    const MANUFACTURER: &str = "";
+    const MODEL: &str = "";
+
+    pub struct Instrument {
+        session: Session,
+    }
+
+    impl Instrument {
+        pub fn from_serial<T: AsRef<str>>(
+            resource_manager: &ResourceManager,
+            serial: T,
+        ) -> Result<Self> {
+            let resource = resource_manager.find_resource_by_identification(
+                "*?INSTR",
+                MANUFACTURER,
+                MODEL,
+                serial.as_ref(),
+            )?;
+            let session = resource_manager.open_session(
+                resource,
+                AccessMode::Exclusive,
+                Timeout::Immediate,
+            )?;
+            Ok(Self { session })
+        }
+
+        pub fn from_resource<T: AsRef<str>>(
+            resource_manager: &ResourceManager,
+            resource: T,
+        ) -> Result<Self> {
+            let session = resource_manager.open_session(
+                resource,
+                AccessMode::Exclusive,
+                Timeout::Immediate,
+            )?;
+
+            let identification = session.identification_query()?;
+
+            if identification.manufacturer == MANUFACTURER && identification.model == MODEL {
+                return Ok(Instrument { session });
+            }
+
+            Err(Error::InstrumentNotFound)
+        }
+    }
+
+    impl MandatoryCommands for Instrument {
+        fn as_session(&self) -> &Session {
+            &self.session
+        }
     }
 }
 
@@ -46,12 +94,7 @@ fn main() -> Result<()> {
         ));
     }
 
-    let resource = match env::var("INSTRUMENT_RESOURCE") {
-        Ok(resource) => resource,
-        Err(_) => resources[0].clone(),
-    };
-
-    let instrument = Instrument::new(&resource_manager, &resource)?;
+    let instrument = Instrument::from_serial(&resource_manager, "1234")?;
 
     // Query Identification
     let identification = instrument.identification_query()?;
