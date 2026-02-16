@@ -351,3 +351,7 @@ impl ServiceRequestEnable {
         self.bits()
     }
 }
+
+pub trait AsScpi {
+    fn as_scpi(&self) -> String;
+}
